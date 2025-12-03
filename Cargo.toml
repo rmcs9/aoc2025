@@ -7,5 +7,5 @@ edition = "2024"
 util = { path = "util" }
 
 [[bin]]
-name = "day01"
-path = "src/bin/day02/day02.rs"
+name = "aoc2025"
+path = "src/bin/day03/day03.rs"
