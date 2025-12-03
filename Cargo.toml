@@ -8,3 +8,4 @@ util = { path = "util" }
 
 [[bin]]
 name = "day01"
+path = "src/bin/day02/day02.rs"
