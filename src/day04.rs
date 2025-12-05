@@ -1,6 +1,6 @@
 use util;
 
-fn main() {
+pub fn day04() {
     let data = util::get_data("data/day04.txt");
 
     // turn each string into a char vector cuz string suck

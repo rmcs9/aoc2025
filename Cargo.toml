@@ -5,7 +5,3 @@ edition = "2024"
 
 [dependencies]
 util = { path = "util" }
-
-[[bin]]
-name = "aoc2025"
-path = "src/bin/day04/day04.rs"

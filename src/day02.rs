@@ -1,7 +1,7 @@
 use util;
 use std::collections::HashSet;
 
-fn main() {
+pub fn day02() {
     let data = util::get_data("data/day02.txt");
     let line = &data[0];
     let mut ranges: Vec<(String, String, u64, u64)> = Vec::new();

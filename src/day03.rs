@@ -1,7 +1,7 @@
 use util;
 
 
-fn main() {
+pub fn day03() {
     let data = util::get_data("data/day03.txt");
 
     println!("p1: {}", part1(&data));

@@ -1,6 +1,6 @@
 use util;
 
-fn main() {
+pub fn day01() {
     let data = util::get_data("data/day01.txt");
 
     println!("p1: {}", part1(&data));
