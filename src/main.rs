@@ -9,8 +9,9 @@ mod day06;
 mod day07;
 mod day08;
 mod day09;
+mod day10;
 
-const FUNCTIONS: [fn(); 9] = [day01::day01, day02::day02, day03::day03, day04::day04, day05::day05, day06::day06, day07::day07, day08::day08, day09::day09];
+const FUNCTIONS: [fn(); 10] = [day01::day01, day02::day02, day03::day03, day04::day04, day05::day05, day06::day06, day07::day07, day08::day08, day09::day09, day10::day10];
 
 fn main() {
     let args: Vec<String> = env::args().collect();
