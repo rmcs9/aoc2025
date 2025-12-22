@@ -1,5 +1,6 @@
 use regex::Regex;
 use std::collections::HashSet;
+use z3::{Config, Context, Optimize, SatResult, ast::Int, ast::Ast};
 
 pub fn day10() {
     let data = util::get_data("data/day10.txt");
@@ -41,9 +42,62 @@ fn part1(machines: &Vec<Machine>) -> u64 {
     presses
 }
 
+// generic z3 solution
 fn part2(machines: &Vec<Machine>) -> u64 {
-    0
+    let mut total_presses: u64 = 0;
+    for machine in machines {
+        let cfg = Config::new();
+        let ctx = Context::new(&cfg);
+        let opt = Optimize::new(&ctx);
+
+        let num_buttons = machine.buttons.len();
+        let num_lights = machine.joltage.len();
+
+        let presses: Vec<Int> = (0..num_buttons)
+            .map(|i| Int::new_const(&ctx, format!("p{}", i)))
+            .collect();
+
+        for p in &presses {
+            opt.assert(&p.ge(&Int::from_i64(&ctx, 0)));
+        }
+
+        for light_idx in 0..num_lights {
+            let mut terms: Vec<Int> = Vec::new();
+
+            for (button_idx, button_mask) in machine.buttons.iter().enumerate() {
+                if (button_mask & (1 << light_idx)) != 0 {
+                    terms.push(presses[button_idx].clone());
+                }
+            }
+
+            let sum = if terms.is_empty() {
+                Int::from_i64(&ctx, 0)
+            } else {
+                Int::add(&ctx, &terms.iter().collect::<Vec<_>>())
+            };
+
+            opt.assert(&sum._eq(&Int::from_u64(&ctx, machine.joltage[light_idx] as u64)));
+        }
+
+        let total = Int::add(&ctx, &presses.iter().collect::<Vec<_>>());
+        opt.minimize(&total);
+
+        match opt.check(&[]) {
+            SatResult::Sat => {
+                let model = opt.get_model().unwrap();
+                let machine_presses: i64 = model
+                    .eval(&total, true)
+                    .unwrap()
+                    .as_i64()
+                    .unwrap();
+                total_presses += machine_presses as u64;
+            }
+            _ => panic!("No solution found for machine"),
+        }
+    }
+    return total_presses
 }
+
 
 struct Machine {
     lights: u32, 
